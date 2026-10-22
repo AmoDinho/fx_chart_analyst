@@ -1,0 +1,15 @@
+{
+  "name": "fx-chart-analyst-aws",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "yarn --cwd packages/core typecheck && yarn --cwd packages/functions typecheck && yarn --cwd packages/web typecheck",
+    "test": "yarn --cwd packages/core test && yarn --cwd packages/functions test && yarn --cwd packages/web test",
+    "dev": "sst dev",
+    "deploy": "sst deploy --stage production"
+  },
+  "packageManager": "yarn@1.22.22"
+}

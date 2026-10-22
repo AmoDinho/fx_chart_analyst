@@ -43,8 +43,9 @@ export function biasClass(direction: string): string {
 }
 
 export function biasTone(direction: string): "long" | "short" | "stand" {
-  if (direction === "up" || direction === "bullish" || direction === "long") return "long";
-  if (direction === "down" || direction === "bearish" || direction === "short") return "short";
+  const value = direction.toLowerCase();
+  if (value === "up" || value === "bullish" || value === "long") return "long";
+  if (value === "down" || value === "bearish" || value === "short") return "short";
   return "stand";
 }
 

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "tsx --import ./test/register-md.mjs --test test/*.ts"
+    "test": "tsx --import ./test/register-md.mjs --test test/*.ts",
+    "live-check": "tsx --import ./test/register-md.mjs src/scripts/live-check.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.1155.0",

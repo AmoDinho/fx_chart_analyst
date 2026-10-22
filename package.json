@@ -11,5 +11,8 @@
     "dev": "sst dev",
     "deploy": "sst deploy --stage production"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@1.22.22",
+  "devDependencies": {
+    "sst": "4.17.2"
+  }
 }

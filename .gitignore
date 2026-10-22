@@ -150,5 +150,6 @@ vite.config.ts.timestamp-*
 
 # SST
 .sst/
+.sst-dev/
 .sst.config.*
 .open-next/

@@ -162,6 +162,17 @@ export const statusResponseSchema = z.object({
 	executions: z.array(executionSchema),
 });
 
+export const markdownResponseSchema = z.object({
+	markdown: z.string(),
+});
+
+export const publicConfigSchema = z.object({
+	apiUrl: z.string(),
+	userPoolId: z.string(),
+	userPoolClientId: z.string(),
+	region: z.string(),
+});
+
 export type DaySummary = z.infer<typeof daySummarySchema>;
 export type DaysResponse = z.infer<typeof daysResponseSchema>;
 export type ReportResponse = z.infer<typeof reportResponseSchema>;
@@ -170,3 +181,5 @@ export type HistoryResponse = z.infer<typeof historyResponseSchema>;
 export type RunsResponse = z.infer<typeof runsResponseSchema>;
 export type AssetDay = z.infer<typeof assetDaySchema>;
 export type RunLog = z.infer<typeof runLogSchema>;
+export type MarkdownResponse = z.infer<typeof markdownResponseSchema>;
+export type PublicConfig = z.infer<typeof publicConfigSchema>;

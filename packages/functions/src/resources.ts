@@ -31,7 +31,6 @@ export type WorkflowResources = StorageResources & {
 	workflowName: string;
 	workflowQualifier?: string;
 	alertsTopicArn?: string;
-	deepseekApiKey?: string;
 	telegramToken?: string;
 	telegramChatId?: string;
 };
@@ -53,7 +52,6 @@ export async function workflowResources(): Promise<WorkflowResources> {
 		workflowName: required(linked.DailyAnalysis?.name, "DailyAnalysis.name"),
 		workflowQualifier: linked.DailyAnalysis?.qualifier,
 		alertsTopicArn: linked.Alerts?.arn,
-		deepseekApiKey: linked.DeepseekApiKey?.value,
 		telegramToken: linked.TelegramBotToken?.value,
 		telegramChatId: linked.TelegramChatId?.value,
 	};

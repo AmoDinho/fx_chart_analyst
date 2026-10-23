@@ -39,7 +39,8 @@ Components, all on the [SST component reference](https://sst.dev/docs/component/
 
 | Component | Name | Purpose |
 | --- | --- | --- |
-| `sst.aws.Secret` | `DeepseekApiKey`, `TelegramBotToken`, `TelegramChatId`, `ViewerAllowEmail` | Set with `sst secret set`, linked only to functions that need them |
+| `aws.secretsmanager.Secret` | `DeepseekApiKey` | Created empty by deploy. Value is set with `aws secretsmanager put-secret-value`. The workflow reads it at runtime. Not an `sst secret`. |
+| `sst.aws.Secret` | `TelegramBotToken`, `TelegramChatId`, `ViewerAllowEmail` | Set with `sst secret set`, linked only to functions that need them |
 | `sst.aws.Bucket` | `Artifacts` | Private bucket for PNGs, Markdown, briefs, drafts. No public access |
 | `sst.aws.Dynamo` | `Analyses` | Single table: report index, run logs, idempotency, failures |
 | `sst.aws.Function` | `Capture` | Chromium capture, 2048 MB, 3 min timeout, `nodejs.install: ["@sparticuz/chromium"]` |
@@ -140,7 +141,7 @@ What changes:
 
 | Concern | Cloudflare | AWS |
 | --- | --- | --- |
-| API key | `env.DEEPSEEK_API_KEY` | `Resource.DeepseekApiKey.value` (linked `sst.aws.Secret`) |
+| API key | `env.DEEPSEEK_API_KEY` | Secrets Manager `fx-chart-analyst/${stage}/DeepseekApiKey`, read with `GetSecretValue` |
 | Non-retryable errors | `NonRetryableError` | Error class excluded by the step's `retryStrategy` |
 | Drafts | KV `drafts/...` | S3 `drafts/{asset}/{date}/completion.json`, lifecycle-expired after 7 days |
 | Report write | KV JSON + Markdown | S3 JSON + Markdown, plus a `REPORT` item in DynamoDB |

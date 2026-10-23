@@ -25,7 +25,6 @@ export default $config({
     const region = aws.getRegionOutput().name;
     const devOrigin = "http://localhost:5173";
 
-    const deepseek = new sst.aws.Secret("DeepseekApiKey");
     const telegramToken = new sst.aws.Secret("TelegramBotToken");
     const telegramChat = new sst.aws.Secret("TelegramChatId");
     new sst.aws.Secret("ViewerAllowEmail");
@@ -59,6 +58,15 @@ export default $config({
       },
     });
     const alerts = new sst.aws.SnsTopic("Alerts");
+    const deepseekSecret = new aws.secretsmanager.Secret(
+      "DeepseekApiKey",
+      {
+        name: $interpolate`fx-chart-analyst/${$app.stage}/DeepseekApiKey`,
+        description: "DeepSeek API key. Set with put-secret-value. Deploys do not write or rotate the value.",
+        recoveryWindowInDays: production ? 7 : 0,
+      },
+      { ignoreChanges: ["secretString"] },
+    );
     const pool = new sst.aws.CognitoUserPool("Viewers", {
       usernames: ["email"],
       mfa: "on",
@@ -141,8 +149,14 @@ export default $config({
       memory: "1024 MB",
       timeout: { invocation: "15 minutes", execution: "2 hours" },
       logging: { format: "json", retention: "1 month" },
-      link: [bucket, table, capture, alerts, deepseek, telegramToken, telegramChat],
-      environment: { VIEWER_ORIGIN: viewer.url },
+      link: [bucket, table, capture, alerts, telegramToken, telegramChat],
+      environment: { VIEWER_ORIGIN: viewer.url, DEEPSEEK_SECRET_ID: deepseekSecret.arn },
+      permissions: [
+        {
+          actions: ["secretsmanager:GetSecretValue"],
+          resources: [deepseekSecret.arn],
+        },
+      ],
       nodejs: { loader: { ".md": "text" } },
     });
     const dispatch = new sst.aws.Function("Dispatch", {
@@ -228,7 +242,7 @@ export default $config({
       treatMissingData: "notBreaching",
     });
 
-    return { api: api.url, viewer: viewer.url, pool: pool.id };
+    return { api: api.url, viewer: viewer.url, pool: pool.id, deepseekSecret: deepseekSecret.name };
   },
 });
 

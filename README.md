@@ -17,11 +17,12 @@ packages/web/         Vite + React viewer
 
 Node 22 is required (`sst` and the Lambda durable runtime). `@sparticuz/chromium@153.0.0` and `puppeteer-core@25.15.0` are pinned together.
 
+DeepSeek’s API key is not an SST secret. Deploy creates an empty Secrets Manager secret named `fx-chart-analyst/<stage>/DeepseekApiKey`. Put the key there after the first deploy. Telegram and the viewer email stay on `sst secret set`. Full account, role, and Cognito steps are in [docs/aws-setup.md](docs/aws-setup.md).
+
 ```bash
 yarn install
 yarn test
 yarn typecheck
-npx sst secret set DeepseekApiKey <key> --stage dev
 npx sst secret set TelegramBotToken <token> --stage dev
 npx sst secret set TelegramChatId <id> --stage dev
 npx sst secret set ViewerAllowEmail <email> --stage dev
